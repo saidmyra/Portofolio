@@ -46,6 +46,11 @@
     background: linear-gradient(90deg, var(--teal), var(--purple));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
+  .nav-logo img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+  }
   .nav-links { display:flex; gap:2rem; list-style:none; }
   .nav-links a {
     color: var(--muted); text-decoration:none;
@@ -340,7 +345,8 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">MS.</div>
+  <div class="nav-logo">
+  <img src="favicon.png" alt="Myra Logo"></div>
   <ul class="nav-links">
     <li><a href="#accueil">Accueil</a></li>
     <li><a href="#projets">Projets</a></li>
