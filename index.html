@@ -199,22 +199,70 @@
   .project-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius:16px; padding:1.8rem;
+    border-radius:16px; padding:0;
     transition: transform .3s, border-color .3s, box-shadow .3s;
     position:relative; overflow:hidden;
-    cursor:default;
+    cursor:pointer;
+    display:flex; flex-direction:column;
+    min-height:100%;
   }
   .project-card::before {
     content:''; position:absolute; inset:0;
     background: linear-gradient(135deg, rgba(10,191,188,0.05) 0%, transparent 50%);
     opacity:0; transition: opacity .3s;
+    pointer-events:none;
   }
   .project-card:hover { transform:translateY(-4px); border-color:rgba(10,191,188,0.4); box-shadow:0 8px 40px rgba(10,191,188,0.1); }
   .project-card:hover::before { opacity:1; }
 
+  .project-shot {
+    height:150px;
+    padding:1rem;
+    background:
+      linear-gradient(135deg, rgba(10,191,188,0.18), rgba(124,58,237,0.12)),
+      linear-gradient(180deg, #101827, #0b111d);
+    border-bottom:1px solid var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .project-shot.has-image { padding:0; background:#050505; }
+  .project-shot.has-image::before { display:none; }
+  .project-card-image {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
+    display:block;
+  }
+  .project-shot::before {
+    content:''; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:22px 22px;
+    opacity:.55;
+  }
+  .project-shot-inner {
+    position:relative; z-index:1; height:100%;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:10px; background:rgba(8,12,20,0.76);
+    padding:.8rem; display:grid; grid-template-columns:1fr 1fr; gap:.6rem;
+    box-shadow:0 18px 45px rgba(0,0,0,0.22);
+  }
+  .mini-panel {
+    border-radius:8px; background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:.5rem;
+  }
+  .mini-panel.wide { grid-column:1 / -1; }
+  .mini-line { height:6px; border-radius:10px; background:rgba(148,163,184,0.35); margin-bottom:.4rem; }
+  .mini-line.teal { width:70%; background:linear-gradient(90deg,var(--teal),var(--purple)); }
+  .mini-bars { display:flex; align-items:end; gap:.25rem; height:34px; }
+  .mini-bars span { flex:1; border-radius:5px 5px 0 0; background:rgba(10,191,188,0.5); }
+  .project-content { padding:1.35rem; display:flex; flex-direction:column; gap:.85rem; flex:1; position:relative; z-index:1; }
+
   .project-cat {
     font-size:.7rem; font-weight:700; letter-spacing:.1em;
-    text-transform:uppercase; margin-bottom:1rem;
+    text-transform:uppercase;
     padding:.3rem .8rem; border-radius:20px; display:inline-block;
   }
   .cat-ml { background:rgba(10,191,188,0.12); color:var(--teal); }
@@ -224,9 +272,10 @@
 
   .project-title {
     font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700;
-    margin-bottom:.7rem; line-height:1.3;
+    line-height:1.3;
   }
-  .project-desc { font-size:.88rem; color:var(--muted); line-height:1.7; margin-bottom:1.2rem; }
+  .project-desc { font-size:.88rem; color:var(--muted); line-height:1.6; }
+  .project-stack { font-size:.78rem; color:var(--teal); font-weight:700; line-height:1.5; }
 
   .project-bullets { list-style:none; margin-bottom:1.2rem; }
   .project-bullets li {
@@ -243,6 +292,95 @@
     background:rgba(255,255,255,0.05);
     border:1px solid rgba(255,255,255,0.1);
     color:var(--muted); padding:.2rem .6rem; border-radius:4px;
+  }
+
+  .project-actions { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:auto; }
+  .project-link {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-height:38px; padding:.55rem .9rem; border-radius:8px;
+    font-size:.78rem; font-weight:700; text-decoration:none;
+    border:1px solid rgba(255,255,255,0.12);
+    color:var(--text); background:rgba(255,255,255,0.04);
+  }
+  .project-link.primary { background:rgba(10,191,188,0.12); color:var(--teal); border-color:rgba(10,191,188,0.35); }
+  .project-link:hover { border-color:var(--teal); color:var(--teal); }
+
+  .modal-backdrop {
+    position:fixed; inset:0; z-index:200;
+    background:rgba(3,6,12,0.78); backdrop-filter:blur(12px);
+    display:none; align-items:center; justify-content:center;
+    padding:1rem;
+  }
+  .modal-backdrop.open { display:flex; }
+  .project-modal {
+    width:min(1080px, 100%);
+    max-height:90vh; overflow:auto;
+    background:#0b111d;
+    border:1px solid rgba(10,191,188,0.24);
+    border-radius:18px;
+    box-shadow:0 24px 80px rgba(0,0,0,0.45);
+  }
+  .modal-head {
+    position:sticky; top:0; z-index:2;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
+    padding:1.4rem;
+    background:rgba(11,17,29,0.94); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .modal-head h3 { font-family:'Syne',sans-serif; font-size:1.5rem; line-height:1.25; margin-bottom:.4rem; }
+  .modal-close {
+    width:38px; height:38px; border-radius:10px;
+    border:1px solid rgba(255,255,255,0.14);
+    background:rgba(255,255,255,0.05); color:var(--text);
+    font-size:1.4rem; cursor:pointer;
+  }
+  .modal-body { padding:1.4rem; display:grid; gap:1.2rem; }
+  .detail-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:1.2rem; }
+  .detail-block {
+    background:rgba(255,255,255,0.035);
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:12px; padding:1.1rem;
+  }
+  .detail-block h4 {
+    font-family:'Syne',sans-serif; color:var(--teal);
+    font-size:.85rem; text-transform:uppercase; letter-spacing:.08em;
+    margin-bottom:.75rem;
+  }
+  .detail-block p, .detail-block li { color:var(--muted); font-size:.9rem; line-height:1.7; }
+  .detail-block ul { list-style:none; display:grid; gap:.45rem; }
+  .detail-block li { padding-left:1.05rem; position:relative; }
+  .detail-block li::before { content:'>'; position:absolute; left:0; color:var(--teal); }
+  .architecture { display:flex; align-items:center; gap:.55rem; flex-wrap:wrap; }
+  .arch-node {
+    padding:.65rem .8rem; border-radius:9px;
+    background:rgba(10,191,188,0.1);
+    border:1px solid rgba(10,191,188,0.26);
+    font-size:.8rem; font-weight:700;
+  }
+  .arch-arrow { color:var(--teal); font-weight:800; }
+  .tech-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:.65rem; }
+  .tech-tile {
+    display:flex; align-items:center; gap:.6rem;
+    padding:.65rem; border-radius:10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.09);
+    color:var(--text); font-size:.82rem; font-weight:700;
+  }
+  .tech-logo {
+    width:30px; height:30px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--teal),var(--purple));
+    color:#fff; font-size:.72rem; font-weight:800;
+  }
+  .result-shot { height:230px; }
+  .result-image {
+    width:100%;
+    max-height:420px;
+    object-fit:cover;
+    object-position:top left;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.12);
+    display:none;
   }
 
   /* ---- SKILLS ---- */
@@ -349,6 +487,11 @@
     .nav-links { gap:1rem; }
     .contact-wrapper { grid-template-columns:1fr; gap:2rem; }
     .hero-stats { gap:1.5rem; }
+    .projects-grid { grid-template-columns:1fr; }
+    .detail-grid { grid-template-columns:1fr; }
+    .modal-head { padding:1rem; }
+    .modal-body { padding:1rem; }
+    .project-shot, .result-shot { height:180px; }
   }
 </style>
 </head>
@@ -385,7 +528,7 @@
 
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Projets</div></div>
+      <div class="stat"><div class="stat-num">7</div><div class="stat-label">Projets</div></div>
       <div class="stat"><div class="stat-num">3</div><div class="stat-label">Langages</div></div>
       <div class="stat"><div class="stat-num">Bac+5</div><div class="stat-label">Formation</div></div>
       <div class="stat"><div class="stat-num">Sept.</div><div class="stat-label">Disponible</div></div>
@@ -396,6 +539,133 @@
 
 <!-- PROJETS -->
 <section id="projets">
+  <div class="container">
+    <p class="section-label reveal">R&eacute;alisations</p>
+    <h2 class="section-title reveal">Mes Projets</h2>
+    <p class="section-sub reveal">Une home page courte et claire, avec des vues d&eacute;taill&eacute;es pour montrer l'architecture, les choix techniques et mon r&ocirc;le.</p>
+
+    <div class="projects-grid">
+      <article class="project-card reveal" data-project="credit">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/finshield-ai-result.png" alt="Dashboard FinShield AI">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-ml">Machine Learning</span> <span class="project-cat cat-dl">RAG</span></div>
+          <h3 class="project-title">AI Credit Scoring System</h3>
+          <p class="project-stack">Python &bull; FastAPI &bull; LangChain &bull; ChromaDB &bull; Mistral AI</p>
+          <p class="project-desc">Syst&egrave;me RAG expliquant automatiquement les d&eacute;cisions de scoring cr&eacute;dit avec recherche s&eacute;mantique et IA g&eacute;n&eacute;rative.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="credit">Voir le projet</button><a class="project-link" href="https://github.com/mangoderb-sudo/finshield-ai" target="_blank">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="pneumonia">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/pneumonia-detection.svg" alt="Dashboard IA de detection de pneumonie">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-dl">Deep Learning</span></div>
+          <h3 class="project-title">D&eacute;tection de pneumonie</h3>
+          <p class="project-stack">Python &bull; TensorFlow &bull; CNN &bull; Medical Imaging</p>
+          <p class="project-desc">Classification de radiographies thoraciques NORMAL vs PNEUMONIE avec un r&eacute;seau CNN et analyse des performances.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="pneumonia">Voir le projet</button><a class="project-link" href="https://github.com/saidmyra/detection_pneumonie" target="_blank">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="titanic">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/titanic-survival.svg" alt="Dashboard de prediction de survie Titanic">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-ml">Machine Learning</span></div>
+          <h3 class="project-title">Pr&eacute;diction de survie Titanic</h3>
+          <p class="project-stack">Python &bull; Scikit-learn &bull; Random Forest &bull; EDA</p>
+          <p class="project-desc">Comparaison de mod&egrave;les de classification pour pr&eacute;dire la survie des passagers et identifier les variables cl&eacute;s.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="titanic">Voir le projet</button><a class="project-link" href="https://github.com/saidmyra/Prediction-de-survie-Titanic-" target="_blank">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="reviews">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/avisia-result.png" alt="Dashboard AvisIA d'analyse des avis clients">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-viz">Visualisation</span> <span class="project-cat cat-ml">NLP</span></div>
+          <h3 class="project-title">Analyse d'avis clients par IA</h3>
+          <p class="project-stack">Python &bull; Groq API &bull; NLP &bull; Power BI</p>
+          <p class="project-desc">Pipeline d'analyse de sentiments pour transformer des avis clients en tendances, insights et axes d'am&eacute;lioration.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="reviews">Voir le projet</button><a class="project-link" href="https://github.com/mahmoudbhs/Projet_web" target="_blank">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="kpi">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/kpi-dashboard-result.png" alt="Dashboard Power BI d'analyse des determinants de salaire">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-viz">Data Visualisation</span> <span class="project-cat cat-ml">KPI</span></div>
+          <h3 class="project-title">Dashboards analytiques & pilotage KPI</h3>
+          <p class="project-stack">Power BI &bull; Python &bull; Data Visualisation</p>
+          <p class="project-desc">Cr&eacute;ation de dashboards analytiques pour suivre les KPI, comparer les indicateurs et faciliter le pilotage data.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="kpi">Voir le projet</button></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="housing">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/idf-logement-result.png" alt="Page IDF Logement">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-viz">Data App</span> <span class="project-cat cat-ml">IA</span></div>
+          <h3 class="project-title">Analyse de logements &eacute;tudiants</h3>
+          <p class="project-stack">Django REST &bull; Selenium &bull; Groq &bull; Leaflet &bull; Plotly</p>
+          <p class="project-desc">Plateforme full-stack de recherche de logements avec scraping, APIs, cartes interactives et d&eacute;tection de fraudes.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="housing">Voir le projet</button><a class="project-link" href="https://github.com/rh-wassim/Logement_PFE" target="_blank">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="project-card reveal" data-project="netflix">
+        <div class="project-shot has-image">
+          <img class="project-card-image" src="assets/jira-board-result.png" alt="Board Jira Scrum avec tickets de gestion des profils et catalogue">
+        </div>
+        <div class="project-content">
+          <div><span class="project-cat cat-agile">Gestion de Projet</span></div>
+          <h3 class="project-title">Plateforme streaming agile</h3>
+          <p class="project-stack">Scrum &bull; Jira &bull; Gantt &bull; Kanban &bull; Backlog</p>
+          <p class="project-desc">Comparaison Scrum vs Gantt pour piloter un projet logiciel complexe avec backlog, sprints et priorisation.</p>
+          <div class="project-actions"><button class="project-link primary" type="button" data-project="netflix">Voir le projet</button></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="projectModal" aria-hidden="true">
+  <div class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div><h3 id="modalTitle"></h3><p class="project-stack" id="modalStack"></p></div>
+      <button class="modal-close" type="button" aria-label="Fermer">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-block"><h4>Overview</h4><p id="modalOverview"></p></div>
+        <div class="detail-block"><h4>Ce que j'ai fait</h4><ul id="modalRole"></ul></div>
+      </div>
+      <div class="detail-block"><h4>Architecture</h4><div class="architecture" id="modalArchitecture"></div></div>
+      <div class="detail-grid">
+        <div class="detail-block"><h4>Challenges</h4><ul id="modalChallenges"></ul></div>
+        <div class="detail-block"><h4>Stack</h4><div class="tech-grid" id="modalTech"></div></div>
+      </div>
+      <div class="detail-block">
+        <h4>R&eacute;sultat final</h4>
+        <img class="result-image" id="modalResultImage" src="" alt="">
+        <div class="project-shot result-shot" id="modalResultMockup"><div class="project-shot-inner"><div class="mini-panel wide"><div class="mini-line teal"></div><div class="mini-line"></div><div class="mini-line"></div></div><div class="mini-panel"><div class="mini-bars"><span style="height:45%"></span><span style="height:88%"></span><span style="height:62%"></span><span style="height:74%"></span></div></div><div class="mini-panel"><div class="mini-line teal"></div><div class="mini-line"></div><div class="mini-line"></div></div></div></div>
+        <p id="modalResult" style="margin-top:1rem;"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="display:none;" aria-hidden="true">
   <div class="container">
     <p class="section-label reveal">Réalisations</p>
     <h2 class="section-title reveal">Mes Projets</h2>
@@ -687,6 +957,160 @@
     navLinks.forEach(a => {
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--teal)' : '';
     });
+  });
+
+  const projectDetails = {
+    credit: {
+      title: 'AI Credit Scoring System',
+      stack: 'Python • FastAPI • LangChain • ChromaDB • Mistral AI • Docker',
+      overview: 'Projet IA permettant d automatiser l analyse de credit et d expliquer les predictions en langage naturel a partir de donnees de scoring et de documents metier.',
+      architecture: ['Frontend', 'FastAPI', 'LangChain', 'ChromaDB', 'Mistral AI'],
+      challenges: ['Reduction des hallucinations', 'Optimisation du retrieval semantique', 'Nettoyage et structuration des donnees credit', 'Equilibre entre explicabilite metier et performance ML'],
+      role: ['Conception du pipeline RAG', 'Creation de l API FastAPI', 'Gestion des embeddings et de la base vectorielle', 'Integration Mistral AI pour les reponses en langage naturel', 'Dashboard Streamlit pour tester les scenarios'],
+      tech: ['Python', 'FastAPI', 'LangChain', 'ChromaDB', 'Mistral AI', 'Streamlit', 'SHAP', 'Docker'],
+      image: 'assets/credit_scoring_dashboard.png',
+      imageAlt: 'Dashboard FinShield AI avec credit scoring, modules banking intelligence et assistant financier IA',
+      result: 'Interface de demonstration permettant de soumettre un profil client, consulter le score, visualiser les facteurs de decision et obtenir une explication claire generee par IA.'
+    },
+    pneumonia: {
+      title: 'Detection de pneumonie par imagerie medicale',
+      stack: 'Python • TensorFlow • CNN • Medical Imaging',
+      overview: 'Classification automatique de radiographies thoraciques pour distinguer les cas NORMAL et PNEUMONIE.',
+      architecture: ['Dataset X-ray', 'Preprocessing', 'CNN', 'Evaluation', 'Prediction'],
+      challenges: ['Qualite variable des images', 'Risque de surapprentissage', 'Interpretation des faux positifs et faux negatifs'],
+      role: ['Preparation des images', 'Entrainement du modele CNN', 'Evaluation avec accuracy, precision, recall et F1-score', 'Analyse de la matrice de confusion'],
+      tech: ['Python', 'TensorFlow', 'Keras', 'CNN', 'NumPy', 'Matplotlib'],
+      image: 'assets/pneumonia-detection.svg',
+      imageAlt: 'Dashboard IA medicale pour detection de pneumonie',
+      result: 'Modele de classification avec tableau de metriques et visualisation des performances par classe.'
+    },
+    titanic: {
+      title: 'Prediction de survie Titanic',
+      stack: 'Python • Scikit-learn • Random Forest • EDA',
+      overview: 'Projet de classification supervisée pour predire la survie des passagers du Titanic et comprendre les facteurs les plus importants.',
+      architecture: ['CSV Kaggle', 'EDA', 'Feature Engineering', 'Models', 'Metrics'],
+      challenges: ['Valeurs manquantes', 'Encodage des variables categorielles', 'Comparaison objective des modeles'],
+      role: ['Nettoyage des donnees', 'Creation de variables explicatives', 'Comparaison regression logistique et Random Forest', 'Analyse des variables cles'],
+      tech: ['Python', 'Pandas', 'Scikit-learn', 'Seaborn', 'Matplotlib'],
+      image: 'assets/titanic-survival.svg',
+      imageAlt: 'Dashboard machine learning de prediction de survie Titanic',
+      result: 'Notebook complet avec preparation des donnees, entrainement, comparaison des metriques et interpretation des variables.'
+    },
+    reviews: {
+      title: 'Analyse automatisee d avis clients par IA',
+      stack: 'Python • Groq API • NLP • Power BI',
+      overview: 'Pipeline NLP permettant de transformer des avis clients en signaux exploitables pour identifier les tendances, sentiments et irritants.',
+      architecture: ['Avis clients', 'Python ETL', 'Groq API', 'Dataset enrichi', 'Power BI'],
+      challenges: ['Texte non structure', 'Normalisation des labels', 'Synthese fiable des irritants clients'],
+      role: ['Collecte et structuration des avis', 'Appels API IA pour le sentiment', 'Creation du dataset analytique', 'Dashboard Power BI'],
+      tech: ['Python', 'Groq API', 'NLP', 'Power BI', 'Pandas'],
+      image: 'assets/avisia-result.png',
+      imageAlt: 'Dashboard AvisIA avec analyse des avis positifs, negatifs et score moyen IA',
+      result: 'Dashboard de restitution avec repartition des sentiments, tendances principales et recommandations d amelioration.'
+    },
+    kpi: {
+      title: 'Dashboards analytiques & pilotage KPI',
+      stack: 'Power BI • Python • Data Visualisation • Matplotlib • Seaborn',
+      overview: 'Projet de data visualisation visant a transformer des donnees metier en indicateurs lisibles pour analyser les determinants de salaire et faciliter le pilotage.',
+      architecture: ['Dataset', 'Python Cleaning', 'EDA', 'Power BI', 'Dashboard KPI'],
+      challenges: ['Selection des KPI pertinents', 'Comparaison claire des indicateurs', 'Lisibilite des visuels Power BI', 'Preparation et nettoyage des donnees'],
+      role: ['Creation de dashboards Power BI', 'Analyse de KPI', 'Visualisation avec Matplotlib et Seaborn', 'Comparaison d indicateurs', 'Mise en forme des cartes, filtres et graphiques'],
+      tech: ['Power BI', 'Python', 'Pandas', 'Matplotlib', 'Seaborn', 'Data Viz'],
+      image: 'assets/kpi-dashboard-result.png',
+      imageAlt: 'Dashboard Power BI sur l analyse structurelle des determinants de salaire en 2023',
+      result: 'Dashboard interactif presentant salaire moyen, mediane, maximum, comparaison par taille d entreprise, niveau d experience, specialisation et mode de travail.'
+    },
+    housing: {
+      title: 'Plateforme d analyse de logements etudiants',
+      stack: 'Django REST • Selenium • Groq • Leaflet • Plotly',
+      overview: 'Application full-stack pour centraliser, analyser et visualiser des annonces de logements etudiants avec detection de fraudes.',
+      architecture: ['Scraping', 'Django REST', 'JWT Auth', 'AI Fraud Check', 'Dashboard'],
+      challenges: ['Donnees immobilieres heterogenes', 'Securisation des APIs', 'Detection d annonces suspectes', 'Visualisation geographique'],
+      role: ['Scraping Selenium', 'Conception APIs REST securisees', 'Integration chatbot IA', 'Visualisations Leaflet, Recharts et Plotly'],
+      tech: ['Django REST', 'Selenium', 'JWT', 'Groq Llama', 'Leaflet', 'Plotly'],
+      image: 'assets/idf-logement-result.png',
+      imageAlt: 'Page de presentation IDF Logement avec stack Django, React, Groq et Leaflet',
+      result: 'Plateforme avec recherche, cartes interactives, indicateurs data et module IA pour assister l utilisateur.'
+    },
+    netflix: {
+      title: 'Gestion agile d une plateforme streaming',
+      stack: 'Scrum • Jira • Gantt • Kanban • Backlog',
+      overview: 'Projet de gestion comparant une approche agile Scrum et une planification Gantt pour une plateforme de streaming.',
+      architecture: ['Vision produit', 'Backlog', 'Sprints Jira', 'Gantt', 'Rapport comparatif'],
+      challenges: ['Priorisation des user stories', 'Estimation de charge', 'Comparaison agile et cycle en V', 'Suivi de dependances'],
+      role: ['Creation du backlog produit', 'Definition des criteres d acceptance', 'Planification des sprints', 'Diagramme de Gantt et analyse comparative'],
+      tech: ['Scrum', 'Jira', 'Kanban', 'Gantt', 'User Stories'],
+      image: 'assets/jira-board-result.png',
+      imageAlt: 'Board Jira Scrum avec colonnes A faire, En cours et Termine',
+      result: 'Dossier projet structuré avec backlog, tickets, planning et comparaison des methodes de pilotage.'
+    }
+  };
+
+  const modal = document.getElementById('projectModal');
+  const closeModal = document.querySelector('.modal-close');
+  const fillList = (id, items) => {
+    document.getElementById(id).innerHTML = items.map(item => `<li>${item}</li>`).join('');
+  };
+  const openProject = (key) => {
+    const project = projectDetails[key];
+    if (!project) return;
+    document.getElementById('modalTitle').textContent = project.title;
+    document.getElementById('modalStack').textContent = project.stack;
+    document.getElementById('modalOverview').textContent = project.overview;
+    document.getElementById('modalResult').textContent = project.result;
+    const resultImage = document.getElementById('modalResultImage');
+    const resultMockup = document.getElementById('modalResultMockup');
+    if (project.image) {
+      resultImage.src = project.image;
+      resultImage.alt = project.imageAlt || project.title;
+      resultImage.style.display = 'block';
+      resultMockup.style.display = 'none';
+    } else {
+      resultImage.removeAttribute('src');
+      resultImage.alt = '';
+      resultImage.style.display = 'none';
+      resultMockup.style.display = 'block';
+    }
+    fillList('modalChallenges', project.challenges);
+    fillList('modalRole', project.role);
+    document.getElementById('modalArchitecture').innerHTML = project.architecture
+      .map((step, index) => `<span class="arch-node">${step}</span>${index < project.architecture.length - 1 ? '<span class="arch-arrow">-&gt;</span>' : ''}`)
+      .join('');
+    document.getElementById('modalTech').innerHTML = project.tech
+      .map(tech => `<div class="tech-tile"><span class="tech-logo">${tech.slice(0, 2).toUpperCase()}</span>${tech}</div>`)
+      .join('');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const hideProject = () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.querySelectorAll('.project-card[data-project]').forEach(el => {
+    el.addEventListener('click', (event) => {
+      const link = event.target.closest('a');
+      const button = event.target.closest('button[data-project]');
+      if (link) return;
+      if (button) return;
+      event.stopPropagation();
+      openProject(el.dataset.project);
+    });
+  });
+  document.querySelectorAll('button[data-project]').forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      openProject(button.dataset.project);
+    });
+  });
+  closeModal.addEventListener('click', hideProject);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) hideProject();
+  });
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideProject();
   });
 </script>
 </body>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-label="Titanic survival prediction machine learning dashboard">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset=".5" stop-color="#fde68a"/>
+      <stop offset="1" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#0abfbc"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#sea)"/>
+  <circle cx="126" cy="214" r="72" fill="#ffffff" opacity=".45"/>
+  <circle cx="205" cy="192" r="54" fill="#ffffff" opacity=".36"/>
+  <circle cx="326" cy="222" r="68" fill="#ffffff" opacity=".32"/>
+  <path d="M0 508c120-52 206 38 332-8 145-53 239-52 392 0 160 55 257 50 476-8v188H0z" fill="#0284c7" opacity=".3"/>
+  <path d="M0 548c150-45 275 44 430-4 160-50 290-42 452 0 121 31 212 32 318-11v147H0z" fill="#075985" opacity=".38"/>
+  <g transform="translate(86 176)">
+    <path d="M236 28v114" stroke="#7c2d12" stroke-width="8" stroke-linecap="round"/>
+    <path d="M180 98h112M202 60h68" stroke="#7c2d12" stroke-width="5" stroke-linecap="round"/>
+    <path d="M126 154h220l-24 74H150z" fill="#f8fafc" stroke="#bae6fd" stroke-width="4"/>
+    <rect x="171" y="113" width="132" height="54" rx="8" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="4"/>
+    <rect x="214" y="80" width="44" height="46" rx="16" fill="#1f2937"/>
+    <rect x="224" y="78" width="24" height="44" rx="10" fill="#f59e0b"/>
+    <path d="M95 225c20 142 92 220 141 245 49-25 121-103 141-245H95z" fill="#f8fafc" stroke="#94a3b8" stroke-width="5"/>
+    <path d="M236 225v245" stroke="#0f172a" stroke-width="6" opacity=".5"/>
+    <path d="M95 225c21 136 83 207 141 245V225z" fill="#dbeafe" opacity=".72"/>
+    <ellipse cx="175" cy="306" rx="24" ry="14" fill="#0f172a" opacity=".9"/>
+    <ellipse cx="297" cy="306" rx="24" ry="14" fill="#0f172a" opacity=".9"/>
+    <path d="M44 433c58-52 123-58 192-20 71-38 139-31 195 20-60 16-126 18-195 5-68 13-132 11-192-5z" fill="#e0f2fe" opacity=".9"/>
+    <path d="M14 456c92-45 155-44 222-10 68-34 134-35 223 10" fill="none" stroke="#0e7490" stroke-width="13" stroke-linecap="round" opacity=".75"/>
+  </g>
+  <text x="76" y="104" fill="#431407" font-family="Arial, sans-serif" font-size="40" font-weight="800">Titanic Survival Prediction</text>
+  <text x="76" y="146" fill="#7c2d12" font-family="Arial, sans-serif" font-size="22">Feature engineering - Logistic Regression vs Random Forest</text>
+  <rect x="650" y="185" width="445" height="350" rx="28" fill="#ffffff" opacity=".9" stroke="#f59e0b"/>
+  <text x="690" y="245" fill="#b45309" font-family="Arial, sans-serif" font-size="25" font-weight="800">Feature Importance</text>
+  <text x="690" y="307" fill="#431407" font-family="Arial, sans-serif" font-size="22">Sex</text>
+  <rect x="850" y="286" width="205" height="26" rx="13" fill="url(#gold)"/>
+  <text x="690" y="367" fill="#431407" font-family="Arial, sans-serif" font-size="22">Passenger class</text>
+  <rect x="850" y="346" width="155" height="26" rx="13" fill="#0abfbc"/>
+  <text x="690" y="427" fill="#431407" font-family="Arial, sans-serif" font-size="22">Age</text>
+  <rect x="850" y="406" width="110" height="26" rx="13" fill="#7c3aed"/>
+  <text x="690" y="487" fill="#431407" font-family="Arial, sans-serif" font-size="22">Fare</text>
+  <rect x="850" y="466" width="84" height="26" rx="13" fill="#f472b6"/>
+  <rect x="76" y="570" width="242" height="58" rx="18" fill="#ffffff" opacity=".9" stroke="#f59e0b"/>
+  <text x="105" y="607" fill="#0f766e" font-family="Arial, sans-serif" font-size="25" font-weight="800">Accuracy 82%</text>
+</svg>

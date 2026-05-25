@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-label="Agile Jira board for streaming platform project">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#09090b"/>
+      <stop offset=".5" stop-color="#111827"/>
+      <stop offset="1" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="jira" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2684ff"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg)"/>
+  <text x="72" y="92" fill="#f8fafc" font-family="Arial, sans-serif" font-size="40" font-weight="800">Streaming Platform Delivery</text>
+  <text x="72" y="134" fill="#94a3b8" font-family="Arial, sans-serif" font-size="22">Scrum backlog - Jira sprint planning - Gantt comparison</text>
+  <rect x="72" y="190" width="1056" height="420" rx="28" fill="#0f172a" stroke="#26364d"/>
+  <g font-family="Arial, sans-serif">
+    <rect x="105" y="235" width="230" height="328" rx="18" fill="#111827"/>
+    <rect x="365" y="235" width="230" height="328" rx="18" fill="#111827"/>
+    <rect x="625" y="235" width="230" height="328" rx="18" fill="#111827"/>
+    <rect x="885" y="235" width="210" height="328" rx="18" fill="#111827"/>
+    <text x="132" y="282" fill="#93c5fd" font-size="23" font-weight="800">Backlog</text>
+    <text x="392" y="282" fill="#c084fc" font-size="23" font-weight="800">To do</text>
+    <text x="652" y="282" fill="#fbbf24" font-size="23" font-weight="800">In progress</text>
+    <text x="912" y="282" fill="#34d399" font-size="23" font-weight="800">Done</text>
+  </g>
+  <g>
+    <rect x="130" y="315" width="178" height="72" rx="14" fill="#172554" stroke="#2563eb"/>
+    <rect x="130" y="410" width="178" height="72" rx="14" fill="#172554" stroke="#2563eb"/>
+    <rect x="390" y="315" width="178" height="72" rx="14" fill="#2e1065" stroke="#7c3aed"/>
+    <rect x="390" y="410" width="178" height="72" rx="14" fill="#2e1065" stroke="#7c3aed"/>
+    <rect x="650" y="315" width="178" height="72" rx="14" fill="#451a03" stroke="#f59e0b"/>
+    <rect x="650" y="410" width="178" height="72" rx="14" fill="#451a03" stroke="#f59e0b"/>
+    <rect x="910" y="315" width="158" height="72" rx="14" fill="#052e2b" stroke="#10b981"/>
+    <rect x="910" y="410" width="158" height="72" rx="14" fill="#052e2b" stroke="#10b981"/>
+  </g>
+  <g fill="#f8fafc" font-family="Arial, sans-serif" font-size="17" font-weight="700">
+    <text x="148" y="350">User stories</text><text x="148" y="445">Acceptance</text>
+    <text x="408" y="350">Sprint 01</text><text x="408" y="445">Priority map</text>
+    <text x="668" y="350">API module</text><text x="668" y="445">Streaming UI</text>
+    <text x="928" y="350">Review</text><text x="928" y="445">Demo</text>
+  </g>
+  <circle cx="1038" cy="94" r="42" fill="url(#jira)"/>
+  <path d="M1020 93l18-18 18 18-18 18z" fill="#fff" opacity=".95"/>
+</svg>
